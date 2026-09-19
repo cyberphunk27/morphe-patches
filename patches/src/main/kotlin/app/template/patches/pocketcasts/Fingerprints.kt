@@ -86,8 +86,24 @@ val SubscriptionPlatformEnumFingerprint = Fingerprint(
 // across the whole app.
 
 val SubscriptionStatusMapperFingerprint = Fingerprint(
-    name = "L",
-    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+    definingClass = null,  // Scan all classes
+    accessFlags = emptyList(),  // Don't constrain access flags
     returnType = "Lau/com/shiftyjelly/pocketcasts/models/type/Membership;",
-    parameters = listOf("Lau/com/shiftyjelly/pocketcasts/servers/sync/SubscriptionStatusResponse;"),
+    parameters = listOf(
+        "Lau/com/shiftyjelly/pocketcasts/servers/sync/SubscriptionStatusResponse;"
+    ),
+    custom = { _, classDef ->
+        classDef.methods.any { method ->
+            method.signature.returnType == "Lau/com/shiftyjelly/pocketcasts/models/type/Membership;" &&
+            method.signature.parameters.size == 1 &&
+            method.signature.parameters[0] == "Lau/com/shiftyjelly/pocketcasts/servers/sync/SubscriptionStatusResponse;"
+        }
+    }
 )
+
+//val SubscriptionStatusMapperFingerprint = Fingerprint(
+//    name = "L",
+//    accessFlags = listOf(AccessFlags.PUBLIC, AccessFlags.STATIC, AccessFlags.FINAL),
+//    returnType = "Lau/com/shiftyjelly/pocketcasts/models/type/Membership;",
+//    parameters = listOf("Lau/com/shiftyjelly/pocketcasts/servers/sync/SubscriptionStatusResponse;"),
+//)
